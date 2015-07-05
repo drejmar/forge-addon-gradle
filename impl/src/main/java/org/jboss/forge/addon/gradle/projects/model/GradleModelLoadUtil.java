@@ -6,17 +6,17 @@
  */
 package org.jboss.forge.addon.gradle.projects.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.gradle.jarjar.com.google.common.collect.Maps;
 import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
 import org.jboss.forge.furnace.util.Strings;
 import org.jboss.forge.parser.xml.Node;
 import org.jboss.forge.parser.xml.XMLParser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Adam Wyłuda
@@ -40,37 +40,15 @@ public class GradleModelLoadUtil
    /**
     * Loads both direct and effective model from given scripts and Gradle xml output.
     */
-   public static GradleModel load(String script, Map<String, String> profileScriptMap, String xmlOutput)
+   public static GradleModel load(String script, String xmlOutput)
    {
       Node root = XMLParser.parse(xmlOutput);
 
-      List<GradleProfile> profiles = profilesFromNode(root, profileScriptMap);
-
       GradleModelBuilder modelBuilder = GradleModelBuilder.create();
-      modelBuilder.setProfiles(profiles);
-      loadEffectiveModel(modelBuilder, root.getSingle("project"), profiles);
+      loadEffectiveModel(modelBuilder, root.getSingle("project"));
       loadDirectModel(modelBuilder, script);
 
       return modelBuilder;
-   }
-
-   private static List<GradleProfile> profilesFromNode(Node rootNode, Map<String, String> profileScriptMap)
-   {
-      List<GradleProfile> profiles = new ArrayList<>();
-      for (Node profileNode : rootNode.get("profile"))
-      {
-         String name = profileNode.getSingle("name").getText().trim();
-         String script = profileScriptMap.get(name);
-
-         GradleModelBuilder modelBuilder = GradleModelBuilder.create();
-         loadEffectiveModel(modelBuilder, profileNode.getSingle("project"), new ArrayList<GradleProfile>());
-         loadDirectModel(modelBuilder, script);
-
-         profiles.add(GradleProfileBuilder.create()
-                  .setName(name)
-                  .setModel(modelBuilder));
-      }
-      return profiles;
    }
 
    private static void loadDirectModel(GradleModelBuilder builder, String script)
@@ -111,7 +89,7 @@ public class GradleModelLoadUtil
    }
 
    private static void loadEffectiveModel(GradleModelBuilder builder,
-            Node projectNode, List<GradleProfile> profiles)
+            Node projectNode)
    {
       builder.setGroup(groupFromNode(projectNode));
       builder.setName(nameFromNode(projectNode));

@@ -6,8 +6,7 @@
  */
 package org.jboss.forge.addon.gradle.projects;
 
-import javax.inject.Inject;
-
+import com.google.common.base.Strings;
 import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
@@ -19,7 +18,7 @@ import org.jboss.forge.furnace.repositories.AddonDependencyEntry;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 
-import com.google.common.base.Strings;
+import javax.inject.Inject;
 
 /**
  * @author Adam Wyłuda
@@ -29,7 +28,6 @@ public class GradleTestProjectProvider
    public static final String SIMPLE_RESOURCES_PATH = "simple/";
    public static final String[] SIMPLE_RESOURCES = new String[] {
             "build.gradle",
-            "test-profile.gradle",
             "settings.gradle",
             "src/main/interfaces/org/testproject/Service.java",
             "src/main/images/forge.txt",

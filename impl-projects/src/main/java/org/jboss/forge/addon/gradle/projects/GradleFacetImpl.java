@@ -6,22 +6,22 @@
  */
 package org.jboss.forge.addon.gradle.projects;
 
-import org.gradle.jarjar.com.google.common.collect.Maps;
 import org.jboss.forge.addon.configuration.Configuration;
 import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
 import org.jboss.forge.addon.gradle.projects.model.GradleModel;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelLoadUtil;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelMergeUtil;
-import org.jboss.forge.addon.gradle.projects.model.GradleProfile;
 import org.jboss.forge.addon.projects.Project;
-import org.jboss.forge.addon.resource.*;
+import org.jboss.forge.addon.resource.FileResource;
+import org.jboss.forge.addon.resource.Resource;
+import org.jboss.forge.addon.resource.ResourceFactory;
+import org.jboss.forge.addon.resource.WriteableResource;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 import org.jboss.forge.roaster.model.util.Strings;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.util.Map;
 
 /**
  * @author Adam Wyłuda
@@ -44,7 +44,6 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
 
    // Cached model
    private GradleModel model;
-   private Map<String, GradleModel> profileModels;
 
    @Override
    public boolean install()
@@ -67,15 +66,9 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
    }
 
    @Override
-   public boolean executeTask(String task)
+   public boolean executeTask(String task, String... arguments)
    {
-      return executeTask(task, "");
-   }
-
-   @Override
-   public boolean executeTask(String task, String profile, String... arguments)
-   {
-      return manager.runGradleBuild(getFaceted().getRoot().getFullyQualifiedName(), task, profile, arguments);
+      return manager.runGradleBuild(getFaceted().getRoot().getFullyQualifiedName(), task, arguments);
    }
 
    @Override
@@ -105,53 +98,6 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
          settingsScript = GradleSourceUtil.setProjectName(settingsScript, this.model.getProjectPath(),
                   newModel.getName());
          getSettingsScriptResource().setContents(settingsScript);
-      }
-
-      // Update profiles
-      for (GradleProfile profile : newModel.getProfiles())
-      {
-         FileResource<?> profileScriptResource = getProfileScriptResource(profile.getName());
-
-         // If profile doesn't exist we must create a file for it
-         if (!profileScriptResource.exists())
-         {
-            profileScriptResource.createNewFile();
-         }
-
-         // Merge new profile contents
-         String oldProfileSource = profileScriptResource.getContents();
-         String newProfileSource = GradleModelMergeUtil.merge(oldProfileSource,
-                  profileModels.get(profile.getName()), profile.getModel());
-         if (!newProfileSource.equals(oldProfileSource))
-         {
-            profileScriptResource.setContents(newProfileSource);
-         }
-      }
-
-      // Remove profile scripts if they are not apparent on the list
-      for (Resource<?> resource : getFaceted().getRoot().listResources(new ResourceFilter()
-      {
-         @Override
-         public boolean accept(Resource<?> resource)
-         {
-            return resource.getName().endsWith(GradleSourceUtil.PROFILE_SUFFIX);
-         }
-      }))
-      {
-         boolean hasProfile = false;
-         String profileName = resource.getName().substring(0, resource.getName().lastIndexOf("-"));
-         for (GradleProfile profile : newModel.getProfiles())
-         {
-            if (profile.getName().equals(profileName))
-            {
-               hasProfile = true;
-               break;
-            }
-         }
-         if (!hasProfile)
-         {
-            resource.delete();
-         }
       }
 
       this.model = null;
@@ -205,44 +151,10 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
       runGradleWithForgeOutputLibrary();
 
       String forgeOutput = readForgeOutputAndClean();
-
       String script = getBuildScriptResource().getContents();
-      Map<String, String> profileScripts = getProfileScripts();
-
-      GradleModel loadedModel = GradleModelLoadUtil.load(script, profileScripts, forgeOutput);
-
-      // Set resources for profiles
-      profileModels = Maps.newHashMap();
-      for (GradleProfile profile : loadedModel.getProfiles())
-      {
-         profileModels.put(profile.getName(), profile.getModel());
-      }
+      GradleModel loadedModel = GradleModelLoadUtil.load(script, forgeOutput);
 
       this.model = loadedModel;
-   }
-
-   private FileResource<?> getProfileScriptResource(String name)
-   {
-      return (FileResource<?>) getBuildScriptResource().getParent()
-               .getChild(name + GradleSourceUtil.PROFILE_SUFFIX);
-   }
-
-   private Map<String, String> getProfileScripts()
-   {
-      Map<String, String> profileScripts = Maps.newHashMap();
-
-      for (Resource<?> resource : getBuildScriptResource().getParent().listResources())
-      {
-         FileResource<?> file = (FileResource<?>) resource;
-         if (file.getName().endsWith(GradleSourceUtil.PROFILE_SUFFIX))
-         {
-            String profile = file.getName().substring(0,
-                     file.getName().length() - GradleSourceUtil.PROFILE_SUFFIX.length());
-            profileScripts.put(profile, file.getContents());
-         }
-      }
-
-      return profileScripts;
    }
 
    private String readForgeOutputAndClean()
@@ -282,6 +194,6 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
    private void runGradleWithForgeOutputLibrary()
    {
       manager.runGradleBuild(getFaceted().getRoot().getFullyQualifiedName(),
-               GradleSourceUtil.FORGE_OUTPUT_TASK, "", "-I", configuration.getString(FORGE_OUTPUT_LIBRARY_LOCATION_CONF_KEY));
+               GradleSourceUtil.FORGE_OUTPUT_TASK, "-I", configuration.getString(FORGE_OUTPUT_LIBRARY_LOCATION_CONF_KEY));
    }
 }

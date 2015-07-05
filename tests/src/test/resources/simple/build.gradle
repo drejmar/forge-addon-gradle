@@ -102,10 +102,4 @@ test << {
     new File(projectDir, 'test.log').createNewFile()
 }
 
-if (project.hasProperty('profile')) {
-    println "Profile: $profile"
-} else {
-    println 'Profile not set!'
-}
-
 println "Running in $projectDir.path"

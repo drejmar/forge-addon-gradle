@@ -73,7 +73,7 @@ public class GradlePackagingFacet extends AbstractFacet<Project> implements Pack
    @Override
    public Resource<?> executeBuild(String... args)
    {
-      getGradleFacet().executeTask("build", "", args);
+      getGradleFacet().executeTask("build", args);
       return getFinalArtifact();
    }
 
@@ -151,7 +151,7 @@ public class GradlePackagingFacet extends AbstractFacet<Project> implements Pack
             arguments.add("--quiet");
          }
 
-         getGradleFacet().executeTask(runTests ? "test" : "", "",
+         getGradleFacet().executeTask(runTests ? "test" : "",
                   (String[]) arguments.toArray(new String[arguments.size()]));
          return getFinalArtifact();
       }

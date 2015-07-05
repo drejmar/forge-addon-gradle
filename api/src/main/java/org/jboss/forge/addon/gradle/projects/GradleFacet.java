@@ -8,7 +8,6 @@ package org.jboss.forge.addon.gradle.projects;
 
 import org.jboss.forge.addon.gradle.projects.model.GradleModel;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelBuilder;
-import org.jboss.forge.addon.gradle.projects.model.GradleProfile;
 import org.jboss.forge.addon.projects.ProvidedProjectFacet;
 import org.jboss.forge.addon.resource.FileResource;
 
@@ -32,17 +31,11 @@ import org.jboss.forge.addon.resource.FileResource;
  */
 public interface GradleFacet extends ProvidedProjectFacet
 {
-   /**
-    * Executes Gradle build with specified task.
-    */
-   boolean executeTask(String task);
 
    /**
-    * Runs Gradle applying given profile.
-    * 
-    * @see GradleProfile
+    * Runs Gradle build with given task and arguments.
     */
-   boolean executeTask(String task, String profile, String... arguments);
+   boolean executeTask(String task, String... arguments);
 
    /**
     * Returns evaluated Gradle project model.

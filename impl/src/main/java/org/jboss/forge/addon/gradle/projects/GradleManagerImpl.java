@@ -6,13 +6,6 @@
  */
 package org.jboss.forge.addon.gradle.projects;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
 import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.GradleConnectionException;
@@ -20,6 +13,13 @@ import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.ResultHandler;
 import org.jboss.forge.furnace.util.Strings;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Adam Wyłuda
@@ -32,7 +32,7 @@ public class GradleManagerImpl implements GradleManager
    }
 
    @Override
-   public boolean runGradleBuild(String directory, String task, String profile, String... arguments)
+   public boolean runGradleBuild(String directory, String task, String... arguments)
    {
       String gradleHome = System.getenv("GRADLE_HOME");
 
@@ -48,11 +48,6 @@ public class GradleManagerImpl implements GradleManager
       BuildLauncher launcher = connection.newBuild().forTasks(task);
 
       List<String> argList = Lists.newArrayList(arguments);
-
-      if (!Strings.isNullOrEmpty(profile))
-      {
-         argList.add("-Pprofile=" + profile);
-      }
 
       launcher = launcher.withArguments(argList.toArray(new String[argList.size()]));
 

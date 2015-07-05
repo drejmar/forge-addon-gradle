@@ -35,7 +35,6 @@ public class GradleModelBuilder implements GradleModel
    private List<GradleDependency> effectiveDependencies = new ArrayList<GradleDependency>();
    private List<GradleDependency> managedDependencies = new ArrayList<GradleDependency>();
    private List<GradleDependency> effectiveManagedDependencies = new ArrayList<GradleDependency>();
-   private List<GradleProfile> profiles = new ArrayList<GradleProfile>();
    private List<GradlePlugin> plugins = new ArrayList<GradlePlugin>();
    private List<GradlePlugin> effectivePlugins = new ArrayList<GradlePlugin>();
    private List<GradleRepository> repositories = new ArrayList<GradleRepository>();
@@ -76,7 +75,6 @@ public class GradleModelBuilder implements GradleModel
       builder.effectiveDependencies = GradleDependencyBuilder.deepCopy(model.getEffectiveDependencies());
       builder.managedDependencies = GradleDependencyBuilder.deepCopy(model.getManagedDependencies());
       builder.effectiveManagedDependencies = GradleDependencyBuilder.deepCopy(model.getEffectiveManagedDependencies());
-      builder.profiles = GradleProfileBuilder.deepCopy(model.getProfiles());
       builder.plugins = GradlePluginBuilder.deepCopy(model.getPlugins());
       builder.effectivePlugins = GradlePluginBuilder.deepCopy(model.getEffectivePlugins());
       builder.repositories = GradleRepositoryBuilder.deepCopy(model.getRepositories());
@@ -341,36 +339,6 @@ public class GradleModelBuilder implements GradleModel
    }
 
    @Override
-   public List<GradleProfile> getProfiles()
-   {
-      return Collections.unmodifiableList(profiles);
-   }
-
-   public GradleModelBuilder setProfiles(List<GradleProfile> profiles)
-   {
-      this.profiles = profiles;
-      return this;
-   }
-
-   @Override
-   public boolean hasProfile(GradleProfile profile)
-   {
-      return profileWhichEqualsTo(profiles, profile) != null;
-   }
-
-   public GradleModelBuilder addProfile(GradleProfile profile)
-   {
-      profiles.add(profile);
-      return this;
-   }
-
-   public GradleModelBuilder removeProfile(GradleProfile profile)
-   {
-      profiles.remove(profileWhichEqualsTo(profiles, profile));
-      return this;
-   }
-
-   @Override
    public List<GradlePlugin> getPlugins()
    {
       return Collections.unmodifiableList(plugins);
@@ -527,18 +495,6 @@ public class GradleModelBuilder implements GradleModel
       return null;
    }
 
-   private GradleProfile profileWhichEqualsTo(List<GradleProfile> profiles, GradleProfile profile)
-   {
-      for (GradleProfile gradleProfile : profiles)
-      {
-         if (gradleProfile.getName().equals(profile.getName()))
-         {
-            return gradleProfile;
-         }
-      }
-      return null;
-   }
-
    private GradlePlugin pluginWhichEqualsTo(List<GradlePlugin> plugins, GradlePlugin plugin)
    {
       for (GradlePlugin gradlePlugin : plugins)
@@ -584,7 +540,7 @@ public class GradleModelBuilder implements GradleModel
                + rootProjectPath + ", archivePath=" + archivePath + ", tasks=" + tasks + ", effectiveTasks="
                + effectiveTasks + ", dependencies=" + dependencies + ", effectiveDependencies=" + effectiveDependencies
                + ", managedDependencies=" + managedDependencies + ", effectiveManagedDependencies="
-               + effectiveManagedDependencies + ", profiles=" + profiles + ", plugins=" + plugins
+               + effectiveManagedDependencies + ", plugins=" + plugins
                + ", effectivePlugins=" + effectivePlugins + ", repositories=" + repositories
                + ", effectiveRepositories=" + effectiveRepositories + ", properties=" + properties
                + ", effectiveProperties=" + effectiveProperties + ", effectiveSourceSets=" + effectiveSourceSets + "]";

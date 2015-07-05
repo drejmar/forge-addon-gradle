@@ -6,17 +6,6 @@
  */
 package org.jboss.forge.addon.gradle.projects;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -30,10 +19,15 @@ import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.arquillian.AddonDependency;
 import org.jboss.forge.arquillian.Dependencies;
 import org.jboss.forge.arquillian.archive.ForgeArchive;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Adam Wyłuda
@@ -165,15 +159,5 @@ public class GradleFacetTest
       String output = ((FileResource<?>) resourceFactory.create(new File(project.getRoot()
                .getFullyQualifiedName(), "output.txt"))).getContents();
       assertEquals("XYZ", output);
-   }
-
-   @Test
-   public void testExecuteTaskWithProfile() throws IOException
-   {
-      facet.installForgeLibrary();
-      assertTrue(facet.executeTask("testProfileOutput", "test"));
-      String output = ((FileResource<?>) resourceFactory.create(new File(project.getRoot()
-               .getFullyQualifiedName(), "testOutput.txt"))).getContents();
-      assertEquals("TEST", output);
    }
 }

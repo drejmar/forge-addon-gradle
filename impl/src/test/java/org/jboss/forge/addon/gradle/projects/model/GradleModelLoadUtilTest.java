@@ -6,17 +6,14 @@
  */
 package org.jboss.forge.addon.gradle.projects.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.jboss.forge.furnace.util.Streams;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.gradle.jarjar.com.google.common.collect.Maps;
-import org.jboss.forge.furnace.util.Streams;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * @author Adam Wyłuda
@@ -29,14 +26,9 @@ public class GradleModelLoadUtilTest
    public static void init() throws IOException
    {
       String script = Streams.toString(GradleModelLoadUtilTest.class.getResourceAsStream("/loader/build.gradle"));
-      Map<String, String> profileScripts = Maps.newHashMap();
-      profileScripts.put("glassfish", Streams.toString(GradleModelLoadUtilTest.class
-               .getResourceAsStream("/loader/glassfish-profile.gradle")));
-      profileScripts.put("wildfly", Streams.toString(GradleModelLoadUtilTest.class
-               .getResourceAsStream("/loader/wildfly-profile.gradle")));
       String xmlOutput = Streams
                .toString(GradleModelLoadUtilTest.class.getResourceAsStream("/loader/forge-output.xml"));
-      model = GradleModelLoadUtil.load(script, profileScripts, xmlOutput);
+      model = GradleModelLoadUtil.load(script, xmlOutput);
    }
 
    @Test
@@ -212,41 +204,6 @@ public class GradleModelLoadUtilTest
       GradleDependency excludedDep = exclusions.get(0);
       assertEquals("org.abc", excludedDep.getGroup());
       assertEquals("xyz", excludedDep.getName());
-   }
-
-   @Test
-   public void testProfiles()
-   {
-      assertTrue(model.hasProfile(GradleProfileBuilder.create().setName("glassfish")));
-      assertTrue(model.hasProfile(GradleProfileBuilder.create().setName("wildfly")));
-      
-      assertEquals("There are more or less than 2 profiles", 2, model.getProfiles().size());
-      boolean glassfishSet = false, wildflySet = false;
-      GradleTask runApplicationServerTask = GradleTaskBuilder.create().setName("runApplicationServer");
-      for (GradleProfile profile : model.getProfiles())
-      {
-         if (profile.getName().equals("glassfish"))
-         {
-            glassfishSet = true;
-            assertTrue("Glassfish profile doesn't contain runApplicationServer task",
-                     profile.getModel().hasEffectiveTask(runApplicationServerTask));
-            assertTrue(
-                     "Glassfish profile doesn't contain specified dependency",
-                     profile.getModel().hasEffectiveDependency(
-                              GradleDependencyBuilder.create("compile", "javax.annotation:jsr250-api:1.0")));
-         }
-         else if (profile.getName().equals("wildfly"))
-         {
-            wildflySet = true;
-            assertTrue("Wildfly profile doesn't contain runApplicationServer task",
-                     profile.getModel().hasEffectiveTask(runApplicationServerTask));
-            assertTrue("Wildfly profile doesn't contain specified dependency",
-                     profile.getModel().hasEffectiveDependency(
-                              GradleDependencyBuilder.create("compile", "log4j:log4j:1.2.17")));
-         }
-      }
-      assertTrue("glassfish profile not found", glassfishSet);
-      assertTrue("wildfly profile not found", wildflySet);
    }
 
    @Test

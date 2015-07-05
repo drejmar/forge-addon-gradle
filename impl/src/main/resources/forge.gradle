@@ -5,12 +5,6 @@ allprojects {
         project.ext.set('forgeInstalled', true)
 
         afterEvaluate {
-            if (project.hasProperty('profile')) {
-                def profileFile = "$projectDir.path/$profile-profile.gradle"
-                if (new File(profileFile).exists()) {
-                    project.apply from: profileFile
-                }
-            }
             if (project.ext.has('_archiveName')) {
                 assemble.taskDependencies.getDependencies(assemble).each {
                     if (it.hasProperty('archiveName')) {

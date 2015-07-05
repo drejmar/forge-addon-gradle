@@ -6,10 +6,10 @@
  */
 package org.jboss.forge.addon.gradle.projects.model;
 
+import org.jboss.forge.addon.gradle.projects.GradleFacet;
+
 import java.util.List;
 import java.util.Map;
-
-import org.jboss.forge.addon.gradle.projects.GradleFacet;
 
 /**
  * Describes single Gradle project. Full project model is loaded in two ways: by parsing build.gradle file (the
@@ -146,18 +146,6 @@ public interface GradleModel
     * @see GradleDependencyBuilder
     */
    boolean hasEffectiveManagedDependency(GradleDependency dependency);
-
-   /**
-    * Returns list of Gradle profiles defined in project directory.
-    */
-   List<GradleProfile> getProfiles();
-
-   /**
-    * Returns true if {@link #getProfiles()} contains a profile with the same name as the given profile.
-    * 
-    * @see GradleProfileBuilder
-    */
-   boolean hasProfile(GradleProfile profile);
 
    /**
     * Returns list of plugins applied to the project by <i>apply plugin: 'name'</i>.

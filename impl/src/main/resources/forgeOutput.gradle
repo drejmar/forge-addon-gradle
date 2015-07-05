@@ -211,27 +211,6 @@ allprojects {
     
         outputInc '<forgeOutput>'
         outputProject project
-        projectDir.eachFileMatch(groovy.io.FileType.FILES, {
-            it.matches('^[a-zA-Z0-9]+-profile\\.gradle$')
-        }, {
-            outputInc '<profile>'
-            outputInc '<name>'
-            output it.name.substring(0, it.name.indexOf('-'))
-            outputDec '</name>'
-    
-            project.configurations.each {
-                it.allDependencies.clear()
-            }
-            project.plugins.clear()
-            project.sourceSets.clear()
-            project.repositories.clear()
-            project.tasks.clear()
-            project.ext.set('_managedDependencies', [:])
-    
-            project.apply from: it
-            outputProject project
-            outputDec '</profile>'
-        })
         outputDec '</forgeOutput>'
     
         outputFile.close()
