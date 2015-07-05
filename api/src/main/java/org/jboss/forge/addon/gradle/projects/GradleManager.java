@@ -24,5 +24,5 @@ public interface GradleManager
     * Builds {@link GradleModel} for given directory. Requires path to <i>forge-plugin.gradle</i> script
     * which applies Forge plugin to project.
     */
-   GradleModel buildModel(String directory, String forgeScriptLocation);
+   GradleModel buildModel(String directory, String forgeScriptLocation, String forgePluginVersion);
 }

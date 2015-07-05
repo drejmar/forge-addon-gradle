@@ -16,6 +16,7 @@ import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.resource.WriteableResource;
+import org.jboss.forge.furnace.addons.Addon;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 import org.jboss.forge.roaster.model.util.Strings;
 
@@ -43,6 +44,8 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
    private ResourceFactory resourceFactory;
    @Inject
    private Configuration configuration;
+   @Inject
+   private Addon addon;
 
    // Cached model
    private GradleModel model;
@@ -154,8 +157,9 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
 
       String projectPath = getFaceted().getRoot().getFullyQualifiedName();
       String forgePluginScriptPath = configuration.getString(FORGE_PLUGIN_SCRIPT_LOCATION_CONF_KEY);
+      String forgePluginVersion = addon.getId().getVersion().toString();
 
-      this.model = manager.buildModel(projectPath, forgePluginScriptPath);
+      this.model = manager.buildModel(projectPath, forgePluginScriptPath, forgePluginVersion);
    }
 
    private boolean isForgePluginScriptInstalled()

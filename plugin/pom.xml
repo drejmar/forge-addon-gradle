@@ -7,13 +7,11 @@
     </parent>
     <artifactId>gradle-plugin</artifactId>
     <name>Forge - Gradle Plugin</name>
-    <version>1.0</version>
 
     <dependencies>
         <dependency>
             <groupId>org.jboss.forge.addon</groupId>
             <artifactId>gradle-api-model</artifactId>
-            <version>${parent.version}</version>
         </dependency>
 
         <dependency>

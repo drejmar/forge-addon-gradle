@@ -70,6 +70,12 @@
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>addon-manager</artifactId>
+         <classifier>forge-addon</classifier>
+         <scope>provided</scope>
+      </dependency>
    </dependencies>
 </project>
 

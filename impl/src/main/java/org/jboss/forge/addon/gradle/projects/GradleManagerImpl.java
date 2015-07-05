@@ -111,7 +111,7 @@ public class GradleManagerImpl implements GradleManager
    }
 
    @Override
-   public GradleModel buildModel(String directory, String forgeScriptLocation)
+   public GradleModel buildModel(String directory, String forgeScriptLocation, String forgePluginVersion)
    {
       GradleConnector connector = GradleConnector.newConnector().newConnector()
                .forProjectDirectory(new File(directory));
@@ -123,7 +123,9 @@ public class GradleManagerImpl implements GradleManager
          connection = connector.connect();
 
          ModelBuilder<GradleModel> gradleModelBuilder = connection.model(GradleModel.class);
-         gradleModelBuilder.withArguments("--init-script", forgeScriptLocation);
+         gradleModelBuilder.withArguments(
+                  "-DforgePluginVersion=" + forgePluginVersion,
+                  "--init-script", forgeScriptLocation);
 
          model = gradleModelBuilder.get();
       }
