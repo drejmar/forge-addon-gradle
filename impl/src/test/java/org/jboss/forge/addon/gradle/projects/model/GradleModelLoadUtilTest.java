@@ -6,6 +6,17 @@
  */
 package org.jboss.forge.addon.gradle.projects.model;
 
+import org.jboss.forge.addon.gradle.model.GradleDependency;
+import org.jboss.forge.addon.gradle.model.GradleDependencyBuilder;
+import org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration;
+import org.jboss.forge.addon.gradle.model.GradleModel;
+import org.jboss.forge.addon.gradle.model.GradlePluginBuilder;
+import org.jboss.forge.addon.gradle.model.GradlePluginType;
+import org.jboss.forge.addon.gradle.model.GradleRepositoryBuilder;
+import org.jboss.forge.addon.gradle.model.GradleSourceDirectory;
+import org.jboss.forge.addon.gradle.model.GradleSourceSet;
+import org.jboss.forge.addon.gradle.model.GradleTask;
+import org.jboss.forge.addon.gradle.model.GradleTaskBuilder;
 import org.jboss.forge.furnace.util.Streams;
 import org.junit.*;
 

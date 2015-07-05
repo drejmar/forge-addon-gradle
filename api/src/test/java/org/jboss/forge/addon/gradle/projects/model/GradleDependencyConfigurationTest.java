@@ -6,18 +6,19 @@
  */
 package org.jboss.forge.addon.gradle.projects.model;
 
-import static org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration.COMPILE;
-import static org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration.DIRECT;
-import static org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration.OTHER;
-import static org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration.RUNTIME;
-import static org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration.TEST_COMPILE;
-import static org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration.TEST_RUNTIME;
+import static org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration.COMPILE;
+import static org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration.DIRECT;
+import static org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration.OTHER;
+import static org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration.RUNTIME;
+import static org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration.TEST_COMPILE;
+import static org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration.TEST_RUNTIME;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration;
 import org.junit.Test;
 
 /**

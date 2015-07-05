@@ -10,6 +10,11 @@
 
    <dependencies>
       <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>gradle-api-model</artifactId>
+      </dependency>
+
+      <dependency>
          <groupId>org.jboss.forge.furnace.container</groupId>
          <artifactId>cdi-api</artifactId>
          <scope>provided</scope>

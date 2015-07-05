@@ -9,7 +9,7 @@ package org.jboss.forge.addon.gradle.projects;
 import org.jboss.forge.addon.configuration.Configuration;
 import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
-import org.jboss.forge.addon.gradle.projects.model.GradleModel;
+import org.jboss.forge.addon.gradle.model.GradleModel;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelLoadUtil;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelMergeUtil;
 import org.jboss.forge.addon.projects.Project;

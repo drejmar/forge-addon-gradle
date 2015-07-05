@@ -6,8 +6,8 @@
  */
 package org.jboss.forge.addon.gradle.projects;
 
-import org.jboss.forge.addon.gradle.projects.model.GradleModel;
-import org.jboss.forge.addon.gradle.projects.model.GradleModelBuilder;
+import org.jboss.forge.addon.gradle.model.GradleModel;
+import org.jboss.forge.addon.gradle.model.GradleModelBuilder;
 import org.jboss.forge.addon.projects.ProvidedProjectFacet;
 import org.jboss.forge.addon.resource.FileResource;
 

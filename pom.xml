@@ -13,6 +13,7 @@
    <name>Forge - Gradle Addon Parent</name>
 
    <modules>
+      <module>api-model</module>
       <module>api</module>
       <module>impl</module>
       <module>impl-projects</module>
@@ -40,6 +41,11 @@
             <groupId>org.jboss.forge.addon</groupId>
             <artifactId>gradle</artifactId>
             <classifier>forge-addon</classifier>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.jboss.forge.addon</groupId>
+            <artifactId>gradle-api-model</artifactId>
             <version>${project.version}</version>
          </dependency>
          <dependency>

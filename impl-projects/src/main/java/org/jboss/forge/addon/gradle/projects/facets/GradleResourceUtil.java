@@ -8,7 +8,7 @@ package org.jboss.forge.addon.gradle.projects.facets;
 
 import java.util.List;
 
-import org.jboss.forge.addon.gradle.projects.model.GradleSourceSet;
+import org.jboss.forge.addon.gradle.model.GradleSourceSet;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.FileResource;
 

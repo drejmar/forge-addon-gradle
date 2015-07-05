@@ -11,7 +11,7 @@ import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.facets.constraints.FacetConstraints;
 import org.jboss.forge.addon.gradle.projects.GradleFacet;
-import org.jboss.forge.addon.gradle.projects.model.GradleModelBuilder;
+import org.jboss.forge.addon.gradle.model.GradleModelBuilder;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.building.BuildException;
 import org.jboss.forge.addon.projects.building.BuildMessage;

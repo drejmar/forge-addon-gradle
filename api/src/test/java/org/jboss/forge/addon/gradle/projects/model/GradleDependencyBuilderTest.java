@@ -8,6 +8,9 @@ package org.jboss.forge.addon.gradle.projects.model;
 
 import static org.junit.Assert.*;
 
+import org.jboss.forge.addon.gradle.model.GradleDependency;
+import org.jboss.forge.addon.gradle.model.GradleDependencyBuilder;
+import org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration;
 import org.junit.Test;
 
 /**

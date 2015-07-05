@@ -13,13 +13,13 @@ import org.gradle.jarjar.com.google.common.base.Joiner;
 import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.gradle.jarjar.com.google.common.collect.Maps;
 import org.jboss.forge.addon.gradle.projects.exceptions.UnremovableElementException;
-import org.jboss.forge.addon.gradle.projects.model.GradleDependency;
-import org.jboss.forge.addon.gradle.projects.model.GradleDependencyBuilder;
-import org.jboss.forge.addon.gradle.projects.model.GradleDependencyConfiguration;
-import org.jboss.forge.addon.gradle.projects.model.GradlePlugin;
-import org.jboss.forge.addon.gradle.projects.model.GradlePluginBuilder;
-import org.jboss.forge.addon.gradle.projects.model.GradleRepository;
-import org.jboss.forge.addon.gradle.projects.model.GradleRepositoryBuilder;
+import org.jboss.forge.addon.gradle.model.GradleDependency;
+import org.jboss.forge.addon.gradle.model.GradleDependencyBuilder;
+import org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration;
+import org.jboss.forge.addon.gradle.model.GradlePlugin;
+import org.jboss.forge.addon.gradle.model.GradlePluginBuilder;
+import org.jboss.forge.addon.gradle.model.GradleRepository;
+import org.jboss.forge.addon.gradle.model.GradleRepositoryBuilder;
 import org.jboss.forge.furnace.util.Strings;
 
 /**

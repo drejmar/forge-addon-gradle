@@ -12,6 +12,12 @@ import java.util.Set;
 
 import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.gradle.jarjar.com.google.common.collect.Maps;
+import org.jboss.forge.addon.gradle.model.GradleDependency;
+import org.jboss.forge.addon.gradle.model.GradleModel;
+import org.jboss.forge.addon.gradle.model.GradlePlugin;
+import org.jboss.forge.addon.gradle.model.GradlePluginType;
+import org.jboss.forge.addon.gradle.model.GradleRepository;
+import org.jboss.forge.addon.gradle.model.GradleTask;
 import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
 import org.jboss.forge.furnace.util.Strings;
 

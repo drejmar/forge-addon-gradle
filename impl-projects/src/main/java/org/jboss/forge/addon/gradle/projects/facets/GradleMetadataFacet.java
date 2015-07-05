@@ -13,7 +13,7 @@ import org.jboss.forge.addon.facets.constraints.FacetConstraint;
 import org.jboss.forge.addon.facets.constraints.FacetConstraints;
 import org.jboss.forge.addon.gradle.projects.GradleFacet;
 import org.jboss.forge.addon.gradle.projects.GradleProjectProvider;
-import org.jboss.forge.addon.gradle.projects.model.GradleModelBuilder;
+import org.jboss.forge.addon.gradle.model.GradleModelBuilder;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectProvider;
 import org.jboss.forge.addon.projects.facets.MetadataFacet;

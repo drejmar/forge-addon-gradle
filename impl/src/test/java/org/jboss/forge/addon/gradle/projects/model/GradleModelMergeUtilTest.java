@@ -11,6 +11,13 @@ import static org.junit.Assert.*;
 import java.util.Set;
 
 import org.gradle.jarjar.com.google.common.collect.Sets;
+import org.jboss.forge.addon.gradle.model.GradleDependency;
+import org.jboss.forge.addon.gradle.model.GradleDependencyBuilder;
+import org.jboss.forge.addon.gradle.model.GradleModel;
+import org.jboss.forge.addon.gradle.model.GradleModelBuilder;
+import org.jboss.forge.addon.gradle.model.GradlePluginBuilder;
+import org.jboss.forge.addon.gradle.model.GradlePluginType;
+import org.jboss.forge.addon.gradle.model.GradleRepositoryBuilder;
 import org.junit.Before;
 import org.junit.Test;
 

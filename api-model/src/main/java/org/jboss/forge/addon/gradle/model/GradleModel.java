@@ -4,9 +4,7 @@
  * Licensed under the Eclipse Public License version 1.0, available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.jboss.forge.addon.gradle.projects.model;
-
-import org.jboss.forge.addon.gradle.projects.GradleFacet;
+package org.jboss.forge.addon.gradle.model;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,7 @@ import java.util.Map;
  * modified or removed. Effective model might be defined in the script file but that doesn't necessarily mean that it
  * could be removed. For example in case of dependency which uses variables for coordinates it's impossible to predict
  * their value basing on variable name so this script element is unremovable.
- * 
- * @see GradleFacet
+ *
  * @see GradleModelBuilder
  * 
  * @author Adam Wyłuda
