@@ -6,6 +6,7 @@
  */
 package org.jboss.forge.addon.gradle.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
  * 
  * @author Adam Wyłuda
  */
-public class GradleModelBuilder implements GradleModel
+public class GradleModelBuilder implements GradleModel, Serializable
 {
    private String group = "";
    private String name = "";
