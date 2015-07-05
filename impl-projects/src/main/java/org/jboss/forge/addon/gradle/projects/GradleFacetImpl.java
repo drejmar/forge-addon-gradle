@@ -10,6 +10,7 @@ import org.jboss.forge.addon.configuration.Configuration;
 import org.jboss.forge.addon.facets.AbstractFacet;
 import org.jboss.forge.addon.gradle.model.GradleModel;
 import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
+import org.jboss.forge.addon.gradle.projects.model.GradleModelLoadUtil;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelMergeUtil;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.resource.FileResource;
@@ -160,6 +161,10 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
       String forgePluginVersion = addon.getId().getVersion().toString();
 
       this.model = manager.buildModel(projectPath, forgePluginScriptPath, forgePluginVersion);
+
+      // Read direct properties
+      String script = getBuildScriptResource().getContents();
+      this.model = GradleModelLoadUtil.load(this.model, script);
    }
 
    private boolean isForgePluginScriptInstalled()

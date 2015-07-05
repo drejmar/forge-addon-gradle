@@ -6,10 +6,6 @@
  */
 package org.jboss.forge.addon.gradle.projects.model;
 
-import static org.junit.Assert.*;
-
-import java.util.Set;
-
 import org.gradle.jarjar.com.google.common.collect.Sets;
 import org.jboss.forge.addon.gradle.model.GradleDependency;
 import org.jboss.forge.addon.gradle.model.GradleDependencyBuilder;
@@ -18,8 +14,11 @@ import org.jboss.forge.addon.gradle.model.GradleModelBuilder;
 import org.jboss.forge.addon.gradle.model.GradlePluginBuilder;
 import org.jboss.forge.addon.gradle.model.GradlePluginType;
 import org.jboss.forge.addon.gradle.model.GradleRepositoryBuilder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Adam Wyłuda
@@ -49,7 +48,7 @@ public class GradleModelMergeUtilTest
                + "    }\n"
                + "}\n";
 
-      model = GradleModelLoadUtil.load(source);
+      model = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
    }
 
    @Test
@@ -68,7 +67,7 @@ public class GradleModelMergeUtilTest
       }
 
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
 
       assertTrue(result.hasDependency(GradleDependencyBuilder.create("compile", "x:y:z")));
       for (GradleDependency dep : deps)
@@ -84,7 +83,7 @@ public class GradleModelMergeUtilTest
       builder.removeDependency(GradleDependencyBuilder.create("compile", "x:y:z"));
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(0, result.getDependencies().size());
    }
@@ -105,7 +104,7 @@ public class GradleModelMergeUtilTest
       }
 
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
 
       assertTrue(result.hasDependency(GradleDependencyBuilder.create("compile", "x:y:z")));
       for (GradleDependency dep : deps)
@@ -121,7 +120,7 @@ public class GradleModelMergeUtilTest
       builder.removeManagedDependency(GradleDependencyBuilder.create("compile", "a:b:c"));
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(0, result.getManagedDependencies().size());
    }
@@ -134,7 +133,7 @@ public class GradleModelMergeUtilTest
       builder.setProperty("a", "b");
 
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
 
       assertEquals(3, result.getProperties().size());
       assertEquals("value", result.getProperties().get("property"));
@@ -149,7 +148,7 @@ public class GradleModelMergeUtilTest
       builder.removeProperty("property");
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(0, result.getProperties().size());
    }
@@ -161,7 +160,7 @@ public class GradleModelMergeUtilTest
       builder.setProperty("property", "newVal");
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(1, result.getProperties().size());
       assertEquals("newVal", result.getProperties().get("property"));
@@ -174,7 +173,7 @@ public class GradleModelMergeUtilTest
       builder.addPlugin(GradlePluginBuilder.create().setClazz("myplugin"));
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(2, result.getPlugins().size());
       assertTrue(result.hasPlugin(GradlePluginBuilder.create().setClazz("java")));
@@ -188,7 +187,7 @@ public class GradleModelMergeUtilTest
       builder.removePlugin(GradlePluginBuilder.create().setClazz("java"));
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(0, result.getPlugins().size());
    }
@@ -200,7 +199,7 @@ public class GradleModelMergeUtilTest
       builder.addRepository(GradleRepositoryBuilder.create().setUrl("http://newrepo.org/"));
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(2, result.getRepositories().size());
       assertTrue(result.hasRepository(GradleRepositoryBuilder.create().setUrl("http://url.com/")));
@@ -214,7 +213,7 @@ public class GradleModelMergeUtilTest
       builder.removeRepository(GradleRepositoryBuilder.create().setUrl("http://url.com/"));
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertEquals(0, result.getRepositories().size());
    }
@@ -226,7 +225,7 @@ public class GradleModelMergeUtilTest
       builder.setPackaging("ear");
       
       source = GradleModelMergeUtil.merge(source, model, builder);
-      GradleModel result = GradleModelLoadUtil.load(source);
+      GradleModel result = GradleModelLoadUtil.load(GradleModelBuilder.create(), source);
       
       assertTrue(result.hasPlugin(GradlePluginBuilder.create().setType(GradlePluginType.EAR)));
    }
