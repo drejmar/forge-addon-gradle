@@ -6,6 +6,7 @@
  */
 package org.jboss.forge.addon.gradle.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * 
  * @author Adam Wyłuda
  */
-public class GradleTaskBuilder implements GradleTask
+public class GradleTaskBuilder implements GradleTask, Serializable
 {
    private String name = "forgeTask";
    private List<GradleTask> dependsOn = new ArrayList<GradleTask>();

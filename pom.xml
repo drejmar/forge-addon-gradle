@@ -51,11 +51,6 @@
          </dependency>
          <dependency>
             <groupId>org.jboss.forge.addon</groupId>
-            <artifactId>gradle-plugin</artifactId>
-            <version>${project.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.jboss.forge.addon</groupId>
             <artifactId>gradle-api</artifactId>
             <version>${project.version}</version>
          </dependency>
@@ -75,6 +70,12 @@
             <version>${version.forge}</version>
             <type>pom</type>
             <scope>import</scope>
+         </dependency>
+
+         <dependency>
+            <groupId>org.jboss.forge.addon</groupId>
+            <artifactId>gradle-plugin</artifactId>
+            <version>1.0</version>
          </dependency>
 
          <!-- Gradle dependencies -->

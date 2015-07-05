@@ -6,6 +6,7 @@
  */
 package org.jboss.forge.addon.gradle.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
  * 
  * @author Adam Wyłuda
  */
-public class GradleSourceSetBuilder implements GradleSourceSet
+public class GradleSourceSetBuilder implements GradleSourceSet, Serializable
 {
    private String name = "";
    private List<GradleSourceDirectory> javaDirs = new ArrayList<GradleSourceDirectory>();

@@ -1,0 +1,13 @@
+initscript {
+    repositories {
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'org.jboss.forge.addon:gradle-plugin:1.0'
+    }
+}
+
+allprojects {
+    apply plugin: org.jboss.forge.addon.gradle.plugin.ForgePlugin
+}

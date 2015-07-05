@@ -10,8 +10,10 @@ import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.GradleConnectionException;
 import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.ModelBuilder;
 import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.ResultHandler;
+import org.jboss.forge.addon.gradle.model.GradleModel;
 import org.jboss.forge.furnace.util.Strings;
 
 import java.io.File;
@@ -43,57 +45,96 @@ public class GradleManagerImpl implements GradleManager
          connector = connector.useInstallation(new File(gradleHome));
       }
 
-      ProjectConnection connection = connector.connect();
-
-      BuildLauncher launcher = connection.newBuild().forTasks(task);
-
-      List<String> argList = Lists.newArrayList(arguments);
-
-      launcher = launcher.withArguments(argList.toArray(new String[argList.size()]));
-
-      // Workaround to hide Gradle output in shell
-      PrintStream originalOut = System.out;
+      ProjectConnection connection = null;
       final ResultHolder holder = new ResultHolder();
-      final CountDownLatch latch = new CountDownLatch(1);
+
       try
       {
-         System.setOut(new PrintStream(new OutputStream()
+         connection = connector.connect();
+
+         BuildLauncher launcher = connection.newBuild().forTasks(task);
+         List<String> argList = Lists.newArrayList(arguments);
+
+         launcher = launcher.withArguments(argList.toArray(new String[argList.size()]));
+
+         // Workaround to hide Gradle output in shell
+         PrintStream originalOut = System.out;
+         final CountDownLatch latch = new CountDownLatch(1);
+         try
          {
-
-            @Override
-            public void write(int b) throws IOException
+            System.setOut(new PrintStream(new OutputStream()
             {
-            }
-         }));
 
-         launcher.run(new ResultHandler<Object>()
+               @Override
+               public void write(int b) throws IOException
+               {
+               }
+            }));
+
+            launcher.run(new ResultHandler<Object>()
+            {
+               @Override
+               public void onComplete(Object result)
+               {
+                  holder.result = true;
+                  latch.countDown();
+               }
+
+               @Override
+               public void onFailure(GradleConnectionException failure)
+               {
+                  holder.result = false;
+                  latch.countDown();
+               }
+            });
+
+            latch.await();
+         }
+         catch (InterruptedException e)
          {
-            @Override
-            public void onComplete(Object result)
-            {
-               holder.result = true;
-               latch.countDown();
-            }
-
-            @Override
-            public void onFailure(GradleConnectionException failure)
-            {
-               holder.result = false;
-               latch.countDown();
-            }
-         });
-
-         latch.await();
-      }
-      catch (InterruptedException e)
-      {
-         e.printStackTrace();
+            e.printStackTrace();
+         }
+         finally
+         {
+            System.setOut(originalOut);
+         }
       }
       finally
       {
-         System.setOut(originalOut);
+         if (connection != null)
+         {
+            connection.close();
+         }
       }
 
       return holder.result;
+   }
+
+   @Override
+   public GradleModel buildModel(String directory, String forgeScriptLocation)
+   {
+      GradleConnector connector = GradleConnector.newConnector().newConnector()
+               .forProjectDirectory(new File(directory));
+      ProjectConnection connection = null;
+      GradleModel model = null;
+
+      try
+      {
+         connection = connector.connect();
+
+         ModelBuilder<GradleModel> gradleModelBuilder = connection.model(GradleModel.class);
+         gradleModelBuilder.withArguments("--init-script", forgeScriptLocation);
+
+         model = gradleModelBuilder.get();
+      }
+      finally
+      {
+         if (connection != null)
+         {
+            connection.close();
+         }
+      }
+
+      return model;
    }
 }

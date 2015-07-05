@@ -8,9 +8,8 @@ package org.jboss.forge.addon.gradle.projects;
 
 import org.jboss.forge.addon.configuration.Configuration;
 import org.jboss.forge.addon.facets.AbstractFacet;
-import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
 import org.jboss.forge.addon.gradle.model.GradleModel;
-import org.jboss.forge.addon.gradle.projects.model.GradleModelLoadUtil;
+import org.jboss.forge.addon.gradle.parser.GradleSourceUtil;
 import org.jboss.forge.addon.gradle.projects.model.GradleModelMergeUtil;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.resource.FileResource;
@@ -34,6 +33,9 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
             "    mavenCentral()\n" +
             "}\n";
    private static final String FORGE_OUTPUT_LIBRARY_LOCATION_CONF_KEY = "forgeOutputLibraryLocation";
+
+   private static final String FORGE_PLUGIN_SCRIPT_LOCATION_CONF_KEY = "forgePluginScriptLocation";
+   private static final String FORGE_PLUGIN_SCRIPT = "/forge-plugin.gradle";
 
    @Inject
    private GradleManager manager;
@@ -78,7 +80,9 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
       {
          return this.model;
       }
+
       loadModel();
+
       return this.model;
    }
 
@@ -144,31 +148,19 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
 
    private void loadModel()
    {
-      if (!isForgeOutputLibraryInstalled())
-      {
-         installForgeOutputLibrary();
+      if (!isForgePluginScriptInstalled()) {
+         installForgePluginScript();
       }
-      runGradleWithForgeOutputLibrary();
 
-      String forgeOutput = readForgeOutputAndClean();
-      String script = getBuildScriptResource().getContents();
-      GradleModel loadedModel = GradleModelLoadUtil.load(script, forgeOutput);
+      String projectPath = getFaceted().getRoot().getFullyQualifiedName();
+      String forgePluginScriptPath = configuration.getString(FORGE_PLUGIN_SCRIPT_LOCATION_CONF_KEY);
 
-      this.model = loadedModel;
+      this.model = manager.buildModel(projectPath, forgePluginScriptPath);
    }
 
-   private String readForgeOutputAndClean()
+   private boolean isForgePluginScriptInstalled()
    {
-      Resource<?> forgeOutputFile = getFaceted().getRoot().getChild(GradleSourceUtil.FORGE_OUTPUT_XML);
-      String forgeOutput = forgeOutputFile.getContents();
-      forgeOutputFile.delete();
-
-      return forgeOutput;
-   }
-
-   private boolean isForgeOutputLibraryInstalled()
-   {
-      String libLocation = configuration.getString(FORGE_OUTPUT_LIBRARY_LOCATION_CONF_KEY);
+      String libLocation = configuration.getString(FORGE_PLUGIN_SCRIPT);
 
       return !Strings.isNullOrEmpty(libLocation)
                && resourceFactory.create(new File(libLocation)).exists();
@@ -183,17 +175,10 @@ public class GradleFacetImpl extends AbstractFacet<Project> implements GradleFac
       return forgeLib;
    }
 
-   private void installForgeOutputLibrary()
-   {
+   private void installForgePluginScript() {
       File temporaryDir = OperatingSystemUtils.createTempDir();
-      Resource<?> forgeLib = installFileFromResources(resourceFactory.create(temporaryDir),
-               GradleSourceUtil.FORGE_OUTPUT_LIBRARY, GradleSourceUtil.FORGE_OUTPUT_LIBRARY_RESOURCE);
-      configuration.setProperty(FORGE_OUTPUT_LIBRARY_LOCATION_CONF_KEY, forgeLib.getFullyQualifiedName());
-   }
-
-   private void runGradleWithForgeOutputLibrary()
-   {
-      manager.runGradleBuild(getFaceted().getRoot().getFullyQualifiedName(),
-               GradleSourceUtil.FORGE_OUTPUT_TASK, "-I", configuration.getString(FORGE_OUTPUT_LIBRARY_LOCATION_CONF_KEY));
+      Resource<?> pluginScript = installFileFromResources(resourceFactory.create(temporaryDir),
+               FORGE_PLUGIN_SCRIPT, FORGE_PLUGIN_SCRIPT);
+      configuration.setProperty(FORGE_PLUGIN_SCRIPT_LOCATION_CONF_KEY, pluginScript.getFullyQualifiedName());
    }
 }

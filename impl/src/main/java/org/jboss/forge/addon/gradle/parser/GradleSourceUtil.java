@@ -6,13 +6,9 @@
  */
 package org.jboss.forge.addon.gradle.parser;
 
-import java.util.List;
-import java.util.Map;
-
 import org.gradle.jarjar.com.google.common.base.Joiner;
 import org.gradle.jarjar.com.google.common.collect.Lists;
 import org.gradle.jarjar.com.google.common.collect.Maps;
-import org.jboss.forge.addon.gradle.projects.exceptions.UnremovableElementException;
 import org.jboss.forge.addon.gradle.model.GradleDependency;
 import org.jboss.forge.addon.gradle.model.GradleDependencyBuilder;
 import org.jboss.forge.addon.gradle.model.GradleDependencyConfiguration;
@@ -20,7 +16,11 @@ import org.jboss.forge.addon.gradle.model.GradlePlugin;
 import org.jboss.forge.addon.gradle.model.GradlePluginBuilder;
 import org.jboss.forge.addon.gradle.model.GradleRepository;
 import org.jboss.forge.addon.gradle.model.GradleRepositoryBuilder;
+import org.jboss.forge.addon.gradle.projects.exceptions.UnremovableElementException;
 import org.jboss.forge.furnace.util.Strings;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Set of pure functions manipulating Gradle build scripts.
@@ -35,7 +35,6 @@ public class GradleSourceUtil
    public static final String FORGE_OUTPUT_LIBRARY_RESOURCE = "/forgeOutput.gradle";
    public static final String FORGE_OUTPUT_TASK = "forgeOutput";
    public static final String FORGE_OUTPUT_XML = "forge-output.xml";
-   public static final String PROFILE_SUFFIX = "-profile.gradle";
 
    public static final String INCLUDE_FORGE_LIBRARY = "apply from: 'forge.gradle'\n";
    public static final String MANAGED_CONFIG = "managed";
